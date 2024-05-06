@@ -1,0 +1,11 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import StarlightHead from '@astrojs/starlight/components/Head.astro';
+import VtbotStarlight from 'astro-vtbot/components/starlight/Base.astro';
+import LoadingIndicator from 'astro-vtbot/components/LoadingIndicator.astro';
+---
+<meta name="darkreader-lock" />
+<meta name="theme-color" content="#1c1427" />
+<VtbotStarlight {...Astro.props}>
+  <StarlightHead {...Astro.props}><slot /></StarlightHead>
+</VtbotStarlight>
