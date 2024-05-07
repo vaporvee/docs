@@ -1,0 +1,23 @@
+---
+
+repo: discord-sdk-godot
+title: Users
+---
+# Methods
+
+### Get current user
+Fetch information about the currently to the Discord client connected user account.<br/>
+Note: This doesn't return the proper values when the game is not fully connected to the Discord client. Give it its time!
+```gdscript
+DiscordSDK.get_current_user()
+```
+
+Returns `Dictionary current_user{:gdscript}`
+| **Key** | Type | Description |
+| --- | --- | --- |
+| `"avatar"{:gdscript}` | `String{:gdscript}` | The avatar hash of the Discord user |
+| `"is_bot"{:gdscript}` | `bool{:gdscript}` | If the user is a bot (when does this happen?) |
+| `"discriminator"{:gdscript}` | `int{:gdscript}` | The "#1234" number after the name from a user |
+| `"id"{:gdscript}` | `int{:gdscript}` | The user's unique ID |
+| `"username"{:gdscript}` | `String{:gdscript}` | The Discord username (without discriminator) |
+| `"avatar_url"{:gdscript}` | `String{:gdscript}` | <details><summary>The url of the user's avatar</summary>also returns the correct url for the [default avatar](https://cdn.discordapp.com/embed/avatars/5.png).<br/>When `avatar` is empty a url will be generated out of `discriminator % 5`. The user avatars are 512x512px and the default avatars 256x256px </details> |

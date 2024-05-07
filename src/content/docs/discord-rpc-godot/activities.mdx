@@ -1,0 +1,98 @@
+---
+
+repo: discord-sdk-godot
+title: Activities
+---
+
+## Variables
+
+Anything of course begins with `DiscordSDK.{:gdscript}` e.g. `DiscordSDK.app_id = #<your Application ID>{:gdscript}`
+### Rich presence
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `app_id{:gdscript}` | `int{:gdscript}` | The Application ID you need to get to make anything in the SDK → https://discord.com/developers/applications |
+| `details{:gdscript}` | `String{:gdscript}` | The first text line visible in the Activity (after the app name) |
+| `state{:gdscript}` | `String{:gdscript}` | The second text line visible in the Activity |
+| `large_image{:gdscript}` | `String{:gdscript}` | Key for the large image you set while uploading an image to the "Rich Presence" → "Art Assets" tab in your online Discord dev panel |
+| `large_image_text{:gdscript}` | `String{:gdscript}` | Text wich shows when you hover over the large image |
+| `small_image{:gdscript}` | `String{:gdscript}` | Key for the small image you set while uploading an image to the "Rich Presence" → "Art Assets" tab in your online Discord dev panel |
+| `small_image_text{:gdscript}` | `String{:gdscript}` | Text wich shows when you hover over the small image |
+| `start_timestamp{:gdscript}` | `int{:gdscript}` | The "02:46 elapsed" timestamp in the presence. Get the current time with Godot's `int(Time.get_unix_time_from_system()){:gdscript}` and Discord counts in seconds from it |
+| `end_timestamp{:gdscript}` | `int{:gdscript}` | The "59:59 elapsed" timestamp in the presence. Get it with Godot's `int(Time.get_unix_time_from_system()){:gdscript}` and add seconds as int e.g. `+ 3600{:gdscript}` → + 1 Hour |
+
+### Invite system
+The values can be pretty anything since there is no lobby system in the SDK anymore. You should already have a custom lobby system wich can compute the secret and change the values. After an invite every value should be the same as the other player.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `party_id{:gdscript}` | `String{:gdscript}` | Unique identifier for the party |
+| `current_party_size{:gdscript}` | `int{:gdscript}` | The current playercount in the party |
+| `max_party_size{:gdscript}` | `int{:gdscript}` | Maximum allowed playercount in the party |
+| `match_secret{:gdscript}` | `String{:gdscript}` | Unique hash for the given match context |
+| `join_secret{:gdscript}` | `String {:gdscript}` | Unique hash for chat invites and Ask to Join |
+| `spectate_secret{:gdscript}` | `String{:gdscript}` | Unique hash for Spectate button |
+| `is_public_party{:gdscript}` | `bool{:gdscript}` | Turn it to `true{:gdscript}` if you want people to join the party without asking. This needs to be enabled in the Discord user settings |
+| `instanced{:gdscript}` | `bool{:gdscript}` | Whether this activity is an instanced context, like a match |
+
+## Signals
+### Invite system
+
+### Activity join request
+**Connect it with:**
+```gdscript
+DiscordSDK.connect("activity_join_request",_on_activity_join_request)
+```
+**Add it in your gdscript as function:**
+```gdscript
+func _on_activity_join_request(user_requesting):
+```
+The Signal fires when someone requests to join your Activity via an request join button in Discord.<br/>
+**Given variable:** [`Dictionary user_requesting{:gdscript}`](/docs/discord-sdk-godot/users#get-current-user)
+<br/>
+<br/>
+### Activity join
+**Connect it with:**
+```gdscript
+DiscordSDK.connect("activity_join",_on_activity_join)
+```
+**Add it in your gdscript as function:**
+```gdscript
+func _on_activity_join(secret):
+```
+The Signal fires when someone joins your Activity via an invite or join button in Discord.<br/>
+**Given variable:** `String secret{:gdscript}`<br/>
+Send the secret to your custom system to generate the other party values and make them the same as the target user.
+<br/>
+<br/>
+### Activity spectate
+**Connect it with:**
+```gdscript
+DiscordSDK.connect("activity_spectate",_on_activity_spectate)
+```
+**Add it in your gdscript as function:**
+```gdscript
+func _on_activity_spectate(secret):
+```
+The Signal fires when someone spectates your Activity via an invite or spectate button in Discord.<br/>
+**Given variable:** `String secret{:gdscript}` <br/>
+Send the secret to your custom system to generate the other party values and make them the same as the target user.
+## Methods
+### Refresh
+After setting any variables you have to reload the SDK with this method
+```gdscript
+DiscordSDK.refresh()
+```
+### Clear
+Disables the Activity.
+```gdscript
+DiscordSDK.clear(reset_values)
+```
+**Taken variable:** `bool reset_values{:gdscript}` **Standard value:** `false{:gdscript}`<br/>
+When turning `reset_values{:gdscript}` to `true{:gdscript}` it completely clears the whole activity with its `app_id{:gdscript}` and other values.
+
+### Unclear
+Reenables the before cleared Activity. Only works with `DiscordSDK.clear(reset_values = false){:gdscript}`(default).
+```gdscript
+DiscordSDK.unclear()
+```
