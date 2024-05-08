@@ -3,7 +3,6 @@ import starlight from "@astrojs/starlight";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypePrettyCode from "rehype-pretty-code";
 import codeTheme from "./src/styles/moonlight-ii.json";
-import lightCodeTheme from "./src/styles/github_light.json";
 
 // https://astro.build/config
 export default defineConfig({
@@ -34,6 +33,7 @@ export default defineConfig({
       ],
       components: {
         Head: "./src/components/Head.astro",
+        //SocialIcons: "./src/components/SocialIcons.astro",
       },
     }),
   ],

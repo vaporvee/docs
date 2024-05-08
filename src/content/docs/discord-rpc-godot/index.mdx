@@ -2,6 +2,7 @@
 repo: discord-sdk-godot
 title: Getting started
 ---
+import { Steps, FileTree } from '@astrojs/starlight/components';
 
 :::note{title="Important Discord Game SDK information"}
 The GameSDK's Achievements, Applications, Voice, Images, Lobbies, Networking, Storage, and Store (purchases and discounts) features have been deprecated and will not be added. <br /> However the rest is and will still be supported by Discord.
@@ -31,16 +32,16 @@ To make anything work in the plugin make sure to run
 
 ## Quick start
 
-| Recommended                                                                                                                                                                                                                                            | Manual                                                                                                                                                                                            |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1. Open the AssetLib tab in your Godot Editor. <br />2. Search for "discord" and install all the files from this plugin <img width="30px" style="margin-top:-30px;" src="https://raw.githubusercontent.com/vaporvee/discord-sdk-godot/main/project/assets/Logo_V2_Clyde.png" /> | 1. [Download the addon](https://github.com/vaporvee/discord-sdk-godot/releases/latest/download/ADDON-Discord-SDK-Godot.zip/) <br />2. Put the `addons/` folder in the root of your Godot project |
-
+<Steps>
+1. Open the AssetLib tab in your Godot Editor. 
+2. Search for "discord" and install all the files from this plugin <img width="30px" src="https://raw.githubusercontent.com/vaporvee/discord-sdk-godot/main/project/assets/Logo_V2_Clyde.png"/>
 3. Enable the addon in your Project Settings under "Plugins" and "DiscordSDK". <br /><sub>(Also adds DiscordSDKLoader autoload wich should be ignored. It needs to run in the background to comunicate with the Discord client)</sub>
 4. Restart your project with the window that should now appear. <br /><img src="https://github.com/vaporvee/discord-sdk-godot/assets/80621863/620d90aa-6e76-4a80-980e-c8c57d8cfa58" width="200px" /><br />
 5. Create an Application under https://discord.com/developers/applications and get the Application ID
 6. While you're here, head to the "OAuth2" section of your application and add `http://127.0.0.1` as a redirect URI for your application.<br /><sub>(Discord says you should do that but it doesn't change anything)</sub>
 7. (optional) Set images under "Rich Presence" and "Art Assets" and remember the keys
 8. Create a gdscript wich gets run for example at startup wich looks something like the following
+</Steps>
 
 ```gdscript
 extends Node
@@ -70,4 +71,16 @@ func _ready():
 ## Troubleshooting
 First of all try reinstalling the plugin and restart both your Godot Editor and your Discord client.
 <details><summary><b>I have no errors in my Godot console from the plugin but my Activity doesn't show up in my Discord Client.</b></summary>Make sure a `DiscordSDK.run_callbacks()` function runs in a `_process(delta)` function. This should happen in the Autoload added by the plugin. If it still doesn't help, try the Demo above. If still nothing appears in your Discord profile card, you have to reset the depending settings in you Discord or reinstall it.</details>
-<details><summary><b>I have a lot of `DiscordSDK not declared` errors spammed in my Godot Console and i can't use the plugin.</b></summary> Make sure the plugin is actually enabled. Then the plugin should work and after the second restart you shouldn't get any errors from the plugin. But if it still gives you the errors delete the file `/addons/discord-sdk-gd/bin/.gdignore` and restart the editor manually.</details>
+<details>
+<summary><b>I have a lot of `DiscordSDK not declared` errors spammed in my Godot Console and i can't use the plugin.</b></summary> Make sure the plugin is actually enabled. Then the plugin should work and after the second restart you shouldn't get any errors from the plugin. But if it still gives you the errors delete this `.gdignore` file
+<FileTree>
+- …
+- addons
+  - discord-rpc-godot
+	- bin
+      - **.gdignore**
+  	- …
+- icon.svg
+</FileTree>
+and restart the editor manually.
+</details>
