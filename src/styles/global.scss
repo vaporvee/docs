@@ -1,13 +1,21 @@
-figure {
-  pre {
-    background-color: var(--sl-color-gray-6) !important;
-    border-radius: 15px;
-    border: none !important;
-    max-width: 100%;
-    overflow-x: auto;
-  }
+starlight-file-tree, .expressive-code figure pre, .frame, code {
+  border-radius: 5px;
 }
 
-code {
-  background-color: var(--sl-color-gray-6) !important;
+code{
+  text-wrap: nowrap;
+}
+
+::selection {
+  background-color: var(--sl-color-accent-high);
+}
+
+::marker {
+  color: var(--sl-color-accent-high);
+}
+
+// Markdown icon hack
+img[src$='#icon']{
+  display: inline-block; 
+  margin: -3px;
 }

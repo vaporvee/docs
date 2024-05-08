@@ -1,46 +1,49 @@
 ---
-
-repo: discord-sdk-godot
 title: Building
+sidebar:
+  badge:
+    text: WIP
+    variant: note
 ---
+import { Steps } from '@astrojs/starlight/components';
+
 ## How to build
+<Steps>
 1. Clone the project
 2. Install [python](https://www.python.org/downloads/)
 3. Install scons via pip with
-```sh
-pip install scons
-```
-and make sure to put scons on your PATH or replace "scons" with a scons run command<br/>
-<br/>
-4. Run this command
-```sh
-python setup.py
-```
-5. and build the project with
-```sh
-python build.py
-```
-There is a prompt how it should start Godot (if `godot` is on PATH) to test the addon fast directly.
-<br/>
+    ```sh
+    pip install scons
+    ```
+    and make sure to put scons on your PATH or replace "scons" with a scons run command<br/>
 
-**or** run
-```sh
-scons
-```
-and
-```sh
-scons target=template_release
-```
-<br/>
+4. Run this command 
+    ```sh title="Setting up project source..."
+    python setup.py
+    ``` 
+5. and build the project with 
+    ```sh title="Building plugin for current platform..."
+    python build.py 
+    ``` 
+    There is a prompt how it should start Godot (if `godot` is on
+    PATH) to test the addon fast directly.
 
+    **or** run
+    ```sh title="Building for DEBUG Godot project exports..."
+    scons
+    ```
+    and
+    ```sh title="Building for RELEASE Godot project exports..."
+    scons target=template_release
+    ```
 6. Now the addon should be installed in the project folder of the repo and can be exported with
-```sh
-python release.py
-```
+    ```sh title="Exporting zip and plugin demos..."
+    python release.py
+    ```
+</Steps>
+
 ## MacOS Support
-:::warn
-MacOS is supported but not included in this project releases. <br/>
-You have to build it yourself because signing costs money we don't want to pay currently.<br/>
-You have to sign the binding dylib to use it. The official Discord Game SDK dylib is already signed by Discord.<br/>
-It should be possible to run the dylib for testing before signing it but i haven't tested it yet.<br/>
+
+:::note{title="Info"}
+MacOS is fully supported but its building process is not fully documented yet.
 :::

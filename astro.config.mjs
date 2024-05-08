@@ -1,14 +1,24 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import rehypeExternalLinks from "rehype-external-links";
-import rehypePrettyCode from "rehype-pretty-code";
-import codeTheme from "./src/styles/moonlight-ii.json";
+import rehypeInlineCodeLanguage from "rehype-inline-code-language"
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
       title: "vaporvee Docs",
+      defaultLocale: 'root',
+      locales: {
+        root: {
+          label: 'English',
+          lang: 'en',
+        },
+        de: {
+          label: 'Deutsch',
+          lang: 'de'
+        }
+      },
       customCss: ["./src/styles/custom.scss", "./src/styles/global.scss"],
       social: {
         github: "https://github.com/vaporvee",
@@ -20,14 +30,14 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: "Guides",
+          label: "Home",
           items: [
             // Each item here is one entry in the navigation menu.
-            { label: "Example Guide", link: "/guides/example/" },
+            { label: "Projects", link: "/" },
           ],
         },
         {
-          label: "Discord SDK Godot",
+          label: "Discord RPC Godot",
           autogenerate: { directory: "discord-rpc-godot" },
         },
       ],
@@ -38,14 +48,8 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    syntaxHighlight: false,
     rehypePlugins: [
-      [
-        rehypePrettyCode,
-        {
-          theme: codeTheme,
-        },
-      ],
+      rehypeInlineCodeLanguage,
       [
         rehypeExternalLinks,
         {
