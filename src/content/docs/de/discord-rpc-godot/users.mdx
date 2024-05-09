@@ -1,0 +1,20 @@
+---
+title: User
+---
+## Methoden
+
+### Get current user
+Rufe Informationen zum derzeit mit dem Discord-Client verbundenen User-Konto ab.<br/>
+Hinweis: Dies gibt die richtigen Werte nicht zurück, wenn das Spiel nicht vollständig mit dem Discord-Client verbunden ist. Gib dem seine Zeit!
+```gdscript
+DiscordRPC.get_current_user()
+```
+Gibt `Dictionary current_user` zurück
+| **Key** | Typ | Beschreibung |
+| --- | --- | --- |
+| `"avatar"` | `String` | Der Avatar-Hash des Discord-Users |
+| `"is_bot"` | `bool` | Ob der User ein Bot ist (wann passiert das?) |
+| `"discriminator"` | `int` | Die "#1234" Nummer nach dem Namen eines Users |
+| `"id"` | `int` | Die eindeutige ID des Users |
+| `"username"` | `String` | Der Discord-User (ohne Diskriminator) |
+| `"avatar_url"` | `String` | <details><summary>Die URL des User-Avatars</summary>Gibt auch die korrekte URL für den [Standard-Avatar](https://cdn.discordapp.com/embed/avatars/5.png) zurück.<br/>Wenn `avatar` leer ist, wird eine URL aus `discriminator % 5` generiert. Die Benutzer-Avatare sind 512x512px groß und die Standard-Avatare 256x256px.</details> |

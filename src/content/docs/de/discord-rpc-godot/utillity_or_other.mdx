@@ -1,0 +1,25 @@
+---
+title: Utillity oder andere Dinge
+tableOfContents:
+  maxHeadingLevel: 4
+---
+## Methoden 
+### Run callbacks
+```gdscript ins={2}
+func _process(_delta):
+    DiscordRPC.run_callbacks()
+```
+Diese Methode wird normalerweise im Autoload `DiscordRPCLoader` ausgeführt, der automatisch vom Plugin hinzugefügt werden sollte. Wenn nicht, muss diese hinzugefügt werden, um die meisten Funktionen des Plugins zu verwenden.
+### Spiel registrieren
+#### Register Steam
+Registriert die Steam-App-ID deines Spiels für das Protokoll `steam://run-game-id/<id>`, wenn du dein Spiel auf Steam veröffentlichst. Wird verwendet, wenn Discord dein Spiel starten möchte oder das Discord-Overlay in dein Spiel einblenden möchte.
+```gdscript
+DiscordRPC.register_steam(1938123)
+```
+Benötigt eine Steam-ID `int`-Wert
+#### Register command
+Registriert den Startbefehl deines Spiels. Wird verwendet, wenn Discord dein Spiel starten möchte oder das Discord-Overlay in dein Spiel einblenden möchte. Ergibt nur wirklich Sinn, wenn der Befehl auf dem angegebenen Betriebssystem funktioniert.
+```gdscript
+DiscordRPC.register_command("my-awesome-game://run --full-screen")
+```
+Benötigt einen Startbefehl `String`-Wert

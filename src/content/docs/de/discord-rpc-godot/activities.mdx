@@ -1,0 +1,93 @@
+---
+title: Activities
+---
+
+## Variablen
+Alles beginnt natürlich mit `DiscordRPC.`, z.B. `_godot DiscordRPC.app_id = #<deine Anwendungs-ID>`
+### Rich Presence
+
+| Name | Typ | Beschreibung |
+| --- | --- | --- |
+| `app_id` | `int` | Die Anwendungs-ID, die du benötigst, um irgendwas im Plugin zu machen → https://discord.com/developers/applications |
+| `details` | `String` | Die erste Textzeile, die in der Aktivität sichtbar ist (nach dem App-Namen) |
+| `state` | `String` | Die zweite Textzeile, die in der Aktivität sichtbar ist |
+| `large_image` | `String` | Schlüssel für das große Bild, das du beim Hochladen eines Bildes im Tab "Rich Presence" → "Art Assets" in deinem Discord-Entwicklungs-Panel online gesetzt hast |
+| `large_image_text` | `String` | Text, der angezeigt wird, wenn du über das große Bild hoverst |
+| `small_image` | `String` | Schlüssel für das kleine Bild, das du beim Hochladen eines Bildes im Tab "Rich Presence" → "Art Assets" in deinem Discord-Entwicklungs-Panel online gesetzt hast |
+| `small_image_text` | `String` | Text, der angezeigt wird, wenn du über das kleine Bild hoverst |
+| `start_timestamp` | `int` | Der "02:46 vergangen" Zeitstempel in der Activity. Hol dir die aktuelle Zeit mit `int(Time.get_unix_time_from_system())` von Godot und Discord zählt in Sekunden hoch |
+| `end_timestamp` | `int` | Der "59:59 vergangen" Zeitstempel in der Activity. Hol ihn dir mit `int(Time.get_unix_time_from_system())` von Godot und füge Sekunden als int hinzu, z.B. `+ 3600` → + eine Stunde |
+
+### Einladungssystem
+Die Werte können ziemlich alles sein, da im SDK kein Lobby-System mehr existiert. Du solltest bereits ein benutzerdefiniertes Lobby-System haben, dass das Secret berechnen und die Werte ändern kann. Nach einer Einladung sollten alle Werte mit denen des anderen Spielers übereinstimmen.
+
+| Name | Typ | Beschreibung |
+| --- | --- | --- |
+| `party_id` | `String` | Eindeutiger Bezeichner für die Party |
+| `current_party_size` | `int` | Die aktuelle Spieleranzahl in der Party |
+| `max_party_size` | `int` | Maximale erlaubte Spieleranzahl in der Party |
+| `match_secret` | `String` | Eindeutiger Hash für den gegebenen Spielkontext |
+| `join_secret` | `String ` | Eindeutiger Hash für Chat-Einladungen und "Zum Spiel einladen" |
+| `spectate_secret` | `String` | Eindeutiger Hash für den "Zuschauen"-Button |
+| `is_public_party` | `bool` | Setze es auf `true`, wenn du willst, dass Leute der Party ohne Nachfrage beitreten können. Dies muss in den Discord-Benutzereinstellungen aktiviert sein |
+| `instanced` | `bool` | Ob diese Aktivität ein instanziierter Kontext ist, wie ein Match |
+
+## Signale
+### Einladungssystem
+
+### Activity join request
+**Verbinde es mit:**
+```gdscript
+DiscordRPC.connect("activity_join_request",_on_activity_join_request)
+```
+**Füge es in deinem GDScript als Funktion hinzu:**
+```gdscript
+func _on_activity_join_request(user_requesting):
+```
+Das Signal wird ausgelöst, wenn jemand über einen Anforderungsbeitrittsbutton in Discord um Beitritt zu deiner Aktivität bittet.<br/>
+**Gegebene Variable:** [`Dictionary user_requesting`](/discord-rpc-godot/users#get-current-user)
+<br/>
+### Activity join
+**Verbinde es mit:**
+```gdscript
+DiscordRPC.connect("activity_join",_on_activity_join)
+```
+**Füge es in deinem GDScript als Funktion hinzu:**
+```gdscript
+func _on_activity_join(secret):
+```
+Das Signal wird ausgelöst, wenn jemand über eine Einladung oder einen Beitrittsbutton in Discord deiner Aktivität beitritt.<br/>
+**Gegebene Variable:** `String secret`<br/>
+Sende den Geheimcode an dein benutzerdefiniertes System, um die anderen Partywerte zu generieren und mache sie mit denen des Zielbenutzers identisch.
+<br/>
+### Activity spectate
+**Verbinde es mit:**
+```gdscript
+DiscordRPC.connect("activity_spectate",_on_activity_spectate)
+```
+**Füge es in deinem GDScript als Funktion hinzu:**
+```gdscript
+func _on_activity_spectate(secret):
+```
+Das Signal wird ausgelöst, wenn jemand über eine Einladung oder einen Zuschauen-Button in Discord deiner Aktivität zuschaut.<br/>
+**Gegebene Variable:** `String secret` <br/>
+Sende den Geheimcode an dein benutzerdefiniertes System, um die anderen Partywerte zu generieren und mache sie mit denen des Zielbenutzers identisch.
+## Methoden
+### Refresh
+Nach dem Setzen von Variablen musst du den RPC mit dieser Methode neu laden.
+```gdscript
+DiscordRPC.refresh()
+```
+### Clear
+Deaktiviert die Aktivität.
+```gdscript
+DiscordRPC.clear(reset_values)
+```
+**Eingenommene Variable:** `bool reset_values` **Standardwert:** `false`<br/>
+Wenn `reset_values` auf `true` gesetzt wird, löscht es die gesamte Aktivität mit ihren `app_id` und anderen Werten.
+
+### Unclear
+Aktiviert die zuvor gelöschte Aktivität erneut. Funktioniert nur mit `DiscordRPC.clear(reset_values = false)`(Standardwert).
+```gdscript
+DiscordRPC.unclear()
+```

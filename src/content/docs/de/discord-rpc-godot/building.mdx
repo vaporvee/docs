@@ -1,0 +1,48 @@
+---
+title: Kompilieren
+sidebar:
+  badge:
+    text: WIP
+    variant: note
+---
+import { Steps } from '@astrojs/starlight/components';
+
+## Wie man das Projekt kompilliert
+<Steps>
+1. Klonen des Projekts
+2. Installiere [python](https://www.python.org/downloads/)
+3. Installiere Scons über pip mit
+    ```sh
+    pip install scons
+    ```
+    und stelle sicher, dass SCons im PATH ist oder "scons" durch einen SCons Ausführungsbefehl ersetzt wird<br/>
+
+4. Führe diesen Befehl aus 
+    ```sh title="Einrichten des Projektquellcodes..."
+    python setup.py
+    ``` 
+5. und kompilliere das Projekt mit 
+    ```sh title="Kopillierung des Plugins für die aktuelle Plattform..."
+    python build.py 
+    ``` 
+    Es gibt eine Aufforderung, wie Godot gestartet werden soll (wenn `godot` im PATH ist), um das Addon schnell direkt zu testen.
+
+    **oder** führe folgendes aus
+    ```sh title="Kopillierung von DEBUG Godot-Projektexports..."
+    scons
+    ```
+    und
+    ```sh title="Kopillierung von RELEASE Godot-Projektexports..."
+    scons target=template_release
+    ```
+6. Nun sollte das Addon im Projektordner des Repositorries installiert sein und kann exportiert werden mit
+    ```sh title="Exportieren der Zip und Plugin-Demos..."
+    python release.py
+    ```
+</Steps>
+
+## MacOS Unterstützung
+
+:::note{title="Info"}
+MacOS wird vollständig unterstützt, aber sein Kompillirungs-Prozess ist noch nicht vollständig dokumentiert.
+:::

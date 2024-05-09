@@ -1,0 +1,33 @@
+import { LinkCard } from "@astrojs/starlight/components";
+
+<li>
+  Aktiviere das Add-On in deinen Projekteinstellungen unter "Plugins" und "DiscordRPC".
+  <sub>
+    (Fügt auch das DiscordRPCLoader-Autoload hinzu, das ignoriert werden sollte. Es muss im Hintergrund laufen, um mit dem Discord-Client zu kommunizieren.)
+  </sub>
+</li>
+<li>
+  Starte dein Projekt mit dem Fenster neu, das jetzt erscheinen sollte. <br />
+  <img
+    src="https://github.com/vaporvee/discord-rpc-godot/assets/80621863/620d90aa-6e76-4a80-980e-c8c57d8cfa58"
+    width="200px"
+  />
+</li>
+<li>
+  <LinkCard
+    title="Erstelle eine Discord-Anwendung"
+    description='Gehe zur hier verlinkten Discord-Entwicklerseite (lass den Tab geöffnet), erstelle eine Anwendung mit "New Application" und kopiere die Application-ID.'
+    href="https://discord.com/developers/applications#"
+    target="_blank"
+  />
+</li>
+<li>
+  Während du da bist, gehe zum Abschnitt "OAuth2" deiner Anwendung und füge `http://127.0.0.1` als Redirect-URI für deine Anwendung hinzu.
+  <sub>(Discord sagt, du solltest das tun, aber es ändert irgendwie nichts.)</sub>
+</li>
+<li>
+  (optional) Setze Bilder unter "Rich Presence" und "Art Assets" und merke dir die Keys (Namen).
+</li>
+<li>
+  Erstelle ein GDScript, das beispielsweise beim Start ausgeführt wird und ungefähr wie folgt aussieht.
+</li>

@@ -1,0 +1,115 @@
+---
+title: Erste Schritte
+prev: false
+---
+import { Steps, FileTree, Tabs, TabItem } from "@astrojs/starlight/components";
+import { Content as LastQuickSteps } from "../../../doc-reusables/de/last_quick_steps.mdx";
+import DownloadBtn from "../../../../components/DownloadBtn.astro"
+
+:::danger[Wichtige Plugin-Erklärung]
+**Diese dokumentation gilt für das Discord Game SDK, NICHT das Embedded App SDK** <br/>
+Jede Erwähnung von "SDK" hat nichts mit der Erstellung von Discord-Sprachkanal Activities zu tun.
+Es dient lediglich dazu, dein Spiel im Profil eines Discord-Benutzers mit zusätzlichen Informationen und einigen anderen Funktionen anzuzeigen.
+:::
+
+:::note[Informationen zum Discord Game SDK]
+Die Funktionen Achievements, Applications, Voice, Images, Lobbies, Networking, Storage und Store (Käufe und Rabatte) des GameSDKs wurden von Discord abgesetzt und werden nicht hinzugefügt. <br /> Der Rest wird jedoch von Discord unterstützt und wird weiterhin von diesem Plugin unterstützt.
+:::
+<br />
+:::tip[Zu beachten] 
+Stelle sicher dass du folgendes immer ausführst, um das Plugin richtig benutzen zu können:
+```gdscript
+func _process(_delta):
+    DiscordRPC.run_callbacks()
+```
+
+Das passiert normalerweise innerhalb des Autoloads, das vom Plugin automatisch hinzugefügt werden sollte. <br />
+Etwas, das **nicht automatisch hinzugefügt wird**, ist jedoch deine `app_id`. Sie ist ebenfalls unbedingt erforderlich, um das Plugin verwenden zu können.
+
+```gdscript
+DiscordRPC.app_id = #<deine Application-ID>
+```
+:::
+
+## Schnellstart
+
+<Tabs>
+  <TabItem label="Empfohlen">
+    <Steps>
+      <ol>
+        <li>Öffne den AssetLib-Tab in deinem Godot-Editor.</li>
+        <li>
+          Suche nach "discord" und installiere alle Dateien aus diesem Plugin
+          <img width="30px" src="https://raw.githubusercontent.com/vaporvee/discord-rpc-godot/main/project/assets/Logo_V2_Clyde.png"/>
+        </li>
+        <LastQuickSteps />
+      </ol>
+    </Steps>
+  </TabItem>
+  <TabItem label="Manuell">
+    <Steps>
+      <ol>
+        <li>
+        <DownloadBtn label="Addon herunterladen" href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/ADDON-discord-rpc-godot.zip/" /><br/>
+        </li>
+        <li>
+		Kopiere den Ordner aus der Zip-Datei in das Stammverzeichnis deines Godot-Projekts wie folgt
+		<FileTree>
+		- **addons/**
+		  - **discord-rpc-gd/** sollte diesen Ordner mit diesen Dateien enthalten
+		    - bin/
+			- nodes/
+		    - ...
+		    - plugin.cfg
+		    - plugin.gd
+		    - ...
+		    - restart_window.tscn
+		    - ...
+		- …
+		- icon.svg
+		- project.godot
+		</FileTree>
+		</li>
+        <LastQuickSteps />
+      </ol>
+    </Steps>
+  </TabItem>
+</Tabs>
+
+```gdscript 
+extends Node
+func _ready():
+DiscordRPC.app_id = 1099618430065324082 # Application-ID
+DiscordRPC.details = "Eine Demo-Aktivität von vaporvee"
+DiscordRPC.state = "Checkpoint 23/23"
+DiscordRPC.large_image = "example_game" # Bild-Key aus "Art Assets"
+DiscordRPC.large_image_text = "Probier es jetzt aus!"
+DiscordRPC.small_image = "boss" # Bild-Key aus "Art Assets"
+DiscordRPC.small_image_text = "Im kampf gegen den Endboss! D:"
+
+DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system()) # "02:46 vergangen"
+# DiscordRPC.end_timestamp = int(Time.get_unix_time_from_system()) + 3600 # +1 Stunde in Unix-Zeit / "01:00:00 verbleibend"
+
+DiscordRPC.refresh() # Nach Änderung der Variablen immer aktualisieren!
+```
+**Dann sollte es ungefähr so aussehen:**
+<img width="400px" src="https://raw.githubusercontent.com/vaporvee/discord-rpc-godot/main/project/assets/ActivityPreview.svg" />
+
+<DownloadBtn label="Probier eine fertige Demo" href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/Demo-Export.zip" />
+## Fehlerbehebung
+Versuche erstmal, das Plugin neu zu installieren, und starte sowohl deinen Godot-Editor als auch deinen Discord-Client neu.
+<details><summary><b>In meiner Godot-Konsole gibt es keine Fehler vom Plugin, aber meine Aktivität wird nicht in meinem Discord-Client angezeigt.</b></summary>Stelle sicher, dass eine `DiscordSDK.run_callbacks()`-Funktion in einer `_process(delta)`-Funktion ausgeführt wird. Dies sollte im Autoload passieren, das vom Plugin hinzugefügt wurde. Wenn es immer noch nicht hilft, versuche die obige Demo. Wenn in deinem Discord-Profilkarten immer noch nichts angezeigt wird, musst du die entsprechenden Einstellungen in deinem Discord-CLient zurücksetzen oder das plugin neu installieren.</details>
+<details>
+<summary><b>Ich habe viele `DiscordSDK not declared`-Fehler in meiner Godot-Konsole und kann das Plugin nicht verwenden.</b></summary>Stelle sicher, dass das Plugin tatsächlich aktiviert ist. Dann sollte das Plugin funktionieren, und nach dem zweiten Neustart solltest du keine Fehler mehr vom Plugin erhalten. Aber wenn es dir trotzdem Fehler gibt, lösche diese `.gdignore`-Datei in deinem Datei-Explorer (wird im Godot-Editor nicht angezeigt)
+<FileTree>
+- addons/
+  - discord-rpc-gd/
+	- bin/
+      - **.gdignore**
+  	- …
+- …
+- icon.svg
+- project.godot
+</FileTree>
+und starte den Editor manuell neu.
+</details>

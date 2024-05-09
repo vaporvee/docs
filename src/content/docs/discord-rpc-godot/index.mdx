@@ -4,7 +4,8 @@ prev: false
 ---
 
 import { Steps, FileTree, Tabs, TabItem } from "@astrojs/starlight/components";
-import { Content as LastQuickSteps } from "../../reusables/last_quick_steps.mdx";
+import { Content as LastQuickSteps } from "../../doc-reusables/last_quick_steps.mdx";
+import DownloadBtn from "../../../components/DownloadBtn.astro"
 
 :::danger[Important plugin explaination]
 **This is for the Discord Game SDK NOT the Embedded App SDK** <br/>
@@ -50,13 +51,13 @@ DiscordRPC.app_id = #<your Application ID>
     <Steps>
       <ol>
         <li>
-          [Download the addon](https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/ADDON-discord-rpc-godot.zip/)
+        <DownloadBtn label="Download the addon" href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/ADDON-discord-rpc-godot.zip/" /><br/>
         </li>
         <li>
 		Copy the folder from the zip file to the root of your Godot project like the following
 		<FileTree>
 		- **addons/**
-		  - discord-rpc-gd/ the addons folder should contain these files
+		  - **discord-rpc-gd/** should contain this folder with these files
 		    - bin/
 			- nodes/
 		    - ...
@@ -92,12 +93,10 @@ DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system()) # "02:46 elap
 
 DiscordRPC.refresh() # Always refresh after changing the values!
 ```
-
 **Then it will look similar to this:**
-
 <img width="400px" src="https://raw.githubusercontent.com/vaporvee/discord-rpc-godot/main/project/assets/ActivityPreview.svg" />
 
-[**Try a built demo**](https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/Demo-Export.zip)<br />
+<DownloadBtn label="Try a built demo" href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/Demo-Export.zip" />
 ## Troubleshooting
 First of all try reinstalling the plugin and restart both your Godot Editor and your Discord client.
 <details><summary><b>I have no errors in my Godot console from the plugin but my Activity doesn't show up in my Discord Client.</b></summary>Make sure a `DiscordSDK.run_callbacks()` function runs in a `_process(delta)` function. This should happen in the Autoload added by the plugin. If it still doesn't help, try the Demo above. If still nothing appears in your Discord profile card, you have to reset the depending settings in you Discord or reinstall it.</details>
