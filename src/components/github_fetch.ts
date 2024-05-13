@@ -1,20 +1,44 @@
+interface Repository {
+  stargazers_count: number;
+  forks_count: number;
+}
+
 class GithubCard extends HTMLElement {
-    private count: number = 0;
-    private heartButton: HTMLButtonElement;
-    private countSpan: HTMLSpanElement;
+  public owner: string;
+  public repo: string; 
+  public starsSpan: HTMLSpanElement;
+  public forksSpan: HTMLSpanElement;
   
-    constructor() {
-      super();
-      this.heartButton = this.querySelector('button') as HTMLButtonElement;
-      this.countSpan = this.querySelector('span') as HTMLSpanElement;
-  
-      // Each time the button is clicked, update the count.
-      this.heartButton.addEventListener('click', () => {
-        this.count++;
-        this.countSpan.textContent = this.count.toString();
-      });
-    }
+
+  constructor() {
+    super();
+    this.repo = this.getAttribute("repo") as string;
+    this.owner = this.getAttribute("owner") as string;
+    this.starsSpan = document.getElementById('gh_stars') as HTMLSpanElement;
+    this.forksSpan = document.getElementById('gh_forks') as HTMLSpanElement;
   }
-  
-  // Tell the browser to use our AstroHeart class for <astro-heart> elements.
-  customElements.define('gh-card', GithubCard);
+
+  static async fetchRepository(owner: string, repo: string): Promise<Repository | null> {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch repository');
+    }
+    const data: Repository = await response.json();
+    return data;
+  }
+
+  async update(): Promise<void> {
+    const repository = await GithubCard.fetchRepository(this.owner, this.repo);
+    this.starsSpan.textContent = repository.stargazers_count.toString() || '0';
+    this.forksSpan.textContent = repository.forks_count.toString() || '0';
+  }
+}
+
+customElements.define('gh-card', GithubCard);
+
+(async () => {
+    const card = document.querySelector('gh-card');
+    if (card instanceof GithubCard) {
+        await card.update();
+    }
+})();
