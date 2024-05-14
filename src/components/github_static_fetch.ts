@@ -6,9 +6,13 @@ export interface Repository {
   language: string;
 }
 
-export const fetchGithubStaticData = async (owner: string, repo: string): Promise<Repository> => {
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-    const data: Repository = await response.json();
+export const fetchGithubStaticData = async (owner: string, repo: string, token: string = ""): Promise<Repository> => {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: {
+        'Authorization': `Bearer  ${token}`
+      }
+    });
+    var data: Repository = await response.json();
     if (!response.ok) {
       data.color = "#fff"
       data.description = ""
@@ -16,5 +20,6 @@ export const fetchGithubStaticData = async (owner: string, repo: string): Promis
       return data
     }
     data.color = colors[data.language].color
+
     return data;
   }

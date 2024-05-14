@@ -3,27 +3,30 @@ interface Props {
   owner: string;
   repo: string;
   target: string;
+  token: string;
 }
 const { owner } = Astro.props;
 const { repo } = Astro.props;
 const { target } = Astro.props;
+const { token } = Astro.props;
 
 const iconColor: string = "#6b6b6b";
 
 import { fetchGithubStaticData } from "./github_static_fetch.ts";
 import type { Repository } from "./github_static_fetch.ts";
 
-const repository: Repository = await fetchGithubStaticData(owner, repo);
+const repository: Repository = await fetchGithubStaticData(owner, repo, token);
 ---
 
 <style>
   gh-card {
     background-color: #00000013;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 0.375rem;
     border: solid 1px #4d4d4d12;
     display: inline-block;
-    min-width: 500px;
+    width: 480px;
+    max-width: 100%;
     .iconbox {
       display: flex;
       align-items: center;
@@ -40,6 +43,9 @@ const repository: Repository = await fetchGithubStaticData(owner, repo);
       height: 12px;
       border: 1px solid #30363db3;
       border-radius: 50%;
+    }
+    a::after {
+      content: "" !important;
     }
   }
 </style>
@@ -66,13 +72,14 @@ const repository: Repository = await fetchGithubStaticData(owner, repo);
       {repo}
     </a>
   </div>
-  <p>{repository.description}</p>
-  <span
-    class="gh_language_color"
-    style={"background-color: " + repository.color}></span>
-  <span>{repository.language}</span>
-  <div class="iconbox">
-    <span id="gh_star_icon"
+  <p style="font-size: 13px; margin:0;">{repository.description}</p>
+  <div class="iconbox" style="font-size: 13px; margin:0;">
+    <span
+      class="gh_language_color"
+      style={"background-color: " + repository.color + "; margin-right:5px;"}
+    ></span>
+    <span>{repository.language}</span>
+    <span id="gh_star_icon" style="margin-left: 15px;"
       ><svg height="16" viewBox="0 0 16 16" width="16">
         <path
           fill={iconColor}
