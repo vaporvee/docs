@@ -25,6 +25,15 @@ const { target } = Astro.props;
       margin-right: 5px;
       margin-bottom: -5px;
     }
+    #gh_language_color {
+      position: relative;
+      top: 1px;
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1px solid #30363db3;
+      border-radius: 50%;
+    }
   }
 </style>
 <script src="./github_fetch.ts"></script>
@@ -50,6 +59,9 @@ const { target } = Astro.props;
       {repo}
     </a>
   </div>
-  <span id="gh_stars">0</span>
-  <span id="gh_forks">0</span>
+  <p id="gh_description"></p>
+  <span id="gh_language_color"></span>
+  <span id="gh_language"></span>
+  <span id="gh_stars"></span>
+  <span id="gh_forks"></span>
 </gh-card>
