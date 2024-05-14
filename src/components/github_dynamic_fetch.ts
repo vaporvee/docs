@@ -1,12 +1,8 @@
-import colors from './colors.json';
-
 interface Repository {
   stargazers_count: number;
   forks_count: number;
-  description: string;
-  language: string;
 }
-//TODO: less dynamic typecript more script in astro head
+
 class GithubCard extends HTMLElement {
   public owner: string;
   public repo: string;
@@ -29,14 +25,14 @@ class GithubCard extends HTMLElement {
 
   update_string() {
     if (this.cachedData) {
-      setString(this, "gh_description", this.cachedData.description);
-      setString(this, "gh_language", this.cachedData.language);
-      setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
-      setString(this, "gh_forks", this.cachedData.forks_count.toString());
-      const element = this.querySelector('#gh_language_color');
-      if (element instanceof HTMLElement) {
-          element.style.backgroundColor = colors[this.cachedData.language].color;
-        }
+      if (this.cachedData.forks_count === 0)
+        hideElement(this,"gh_fork_icon")
+      else
+        setString(this, "gh_forks", this.cachedData.forks_count.toString());
+      if (this.cachedData.stargazers_count === 0)
+        hideElement(this,"gh_star_icon")
+      else
+        setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
     }
   }
 
@@ -46,6 +42,9 @@ class GithubCard extends HTMLElement {
     if (cachedData) {
       this.cachedData = JSON.parse(cachedData);
       this.update_string();
+    } else  {
+      hideElement(this,"gh_fork_icon")
+      hideElement(this,"gh_star_icon")
     }
     try {
       this.cachedData = await GithubCard.fetchRepository(this.owner, this.repo);
@@ -69,5 +68,12 @@ function setString(card: GithubCard, elementID: string, value: string | number) 
   const element = card.querySelector(`#${elementID}`);
   if (element) {
     element.textContent = value.toString();
+  }
+}
+
+function hideElement(card: GithubCard, elementID: string) {
+  const element: HTMLElement = card.querySelector(`#${elementID}`);
+  if (element) {
+    element.style.visibility = "hidden"
   }
 }
