@@ -28,11 +28,11 @@ class GithubCard extends HTMLElement {
   update_string() {
     if (this.cachedData) {
       if (this.cachedData.forks_count != 0) {
-        showElement(this, "gh_fork_icon")
+        showElement(this, "gh_fork_icon");
         setString(this, "gh_forks", this.cachedData.forks_count.toString());
       }
       if (this.cachedData.stargazers_count != 0) {
-        showElement(this, "gh_star_icon")
+        showElement(this, "gh_star_icon");
         setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
       }
     }
@@ -40,17 +40,21 @@ class GithubCard extends HTMLElement {
 
   async update(): Promise<void> {
     const cachedDataKey = `githubCardData_${this.owner}_${this.repo}`;
-    const cachedData = localStorage.getItem(cachedDataKey);
+    let cachedData = localStorage.getItem(cachedDataKey);
     if (cachedData) {
       this.cachedData = JSON.parse(cachedData);
+      this.update_string();
     }
+
     try {
-      this.cachedData = await GithubCard.fetchRepository(this.owner, this.repo);
-      localStorage.setItem(cachedDataKey, JSON.stringify(this.cachedData));
+      const freshData = await GithubCard.fetchRepository(this.owner, this.repo);
+      if (freshData) {
+        this.cachedData = freshData;
+        localStorage.setItem(cachedDataKey, JSON.stringify(freshData));
+        this.update_string();
+      }
     } catch (error) {
       console.log('Failed to fetch repository data:', error);
-    } finally {
-      this.update_string();
     }
   }
 }
@@ -73,6 +77,6 @@ function setString(card: GithubCard, elementID: string, value: string | number) 
 function showElement(card: GithubCard, elementID: string) {
   const element: HTMLElement = card.querySelector(`#${elementID}`);
   if (element) {
-    element.style.visibility = "initial"
+    element.style.visibility = "initial";
   }
 }
