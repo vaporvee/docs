@@ -17,7 +17,7 @@ class GithubCard extends HTMLElement {
   static async fetchRepository(owner: string, repo: string): Promise<Repository | null> {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
     if (!response.ok) {
-      throw new Error('Failed to fetch repository');
+      console.log('Failed to fetch repository');
     }
     const data: Repository = await response.json();
     return data;
@@ -26,11 +26,12 @@ class GithubCard extends HTMLElement {
   update_string() {
     if (this.cachedData) {
       if (this.cachedData.forks_count === 0)
-        hideElement(this,"gh_fork_icon")
+        hideElement(this, "gh_fork_icon")
       else
         setString(this, "gh_forks", this.cachedData.forks_count.toString());
+
       if (this.cachedData.stargazers_count === 0)
-        hideElement(this,"gh_star_icon")
+        hideElement(this, "gh_star_icon")
       else
         setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
     }
@@ -42,16 +43,13 @@ class GithubCard extends HTMLElement {
     if (cachedData) {
       this.cachedData = JSON.parse(cachedData);
       this.update_string();
-    } else  {
-      hideElement(this,"gh_fork_icon")
-      hideElement(this,"gh_star_icon")
     }
     try {
       this.cachedData = await GithubCard.fetchRepository(this.owner, this.repo);
       localStorage.setItem(cachedDataKey, JSON.stringify(this.cachedData));
       this.update_string();
     } catch (error) {
-      console.error('Failed to fetch repository data:', error);
+      console.log('Failed to fetch repository data:', error);
     }
   }
 }
@@ -59,9 +57,9 @@ class GithubCard extends HTMLElement {
 customElements.define('gh-card', GithubCard);
 
 document.querySelectorAll('gh-card').forEach(async (card) => {
-    if (card instanceof GithubCard) {
-        await card.update();
-    }
+  if (card instanceof GithubCard) {
+    await card.update();
+  }
 });
 
 function setString(card: GithubCard, elementID: string, value: string | number) {

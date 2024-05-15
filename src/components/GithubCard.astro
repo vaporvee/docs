@@ -3,19 +3,19 @@ interface Props {
   owner: string;
   repo: string;
   target: string;
-  token: string;
+  auth: string;
 }
 const { owner } = Astro.props;
 const { repo } = Astro.props;
 const { target } = Astro.props;
-const { token } = Astro.props;
+const { auth } = Astro.props;
 
 const iconColor: string = "#6b6b6b";
 
 import { fetchGithubStaticData } from "./github_static_fetch.ts";
 import type { Repository } from "./github_static_fetch.ts";
 
-const repository: Repository = await fetchGithubStaticData(owner, repo, token);
+const repository: Repository = await fetchGithubStaticData(owner, repo, auth);
 ---
 
 <style>
