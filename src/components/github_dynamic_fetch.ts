@@ -7,6 +7,7 @@ class GithubCard extends HTMLElement {
   public owner: string;
   public repo: string;
   private cachedData: Repository | null = null;
+  public cached: boolean;
 
   constructor() {
     super();
@@ -42,6 +43,7 @@ class GithubCard extends HTMLElement {
     const cachedDataKey = `githubCardData_${this.owner}_${this.repo}`;
     let cachedData = localStorage.getItem(cachedDataKey);
     if (cachedData) {
+      this.cached = true
       this.cachedData = JSON.parse(cachedData);
       this.update_string();
     }
@@ -60,12 +62,22 @@ class GithubCard extends HTMLElement {
 }
 
 customElements.define('gh-card', GithubCard);
-
-document.querySelectorAll('gh-card').forEach(async (card) => {
-  if (card instanceof GithubCard) {
+async function updateCards() {
+  const notCachedCards = Array.from(document.querySelectorAll('gh-card') as NodeListOf<GithubCard>).filter(card =>
+    !card.cached
+  );
+  await Promise.all(notCachedCards.map(async (card) => {
     await card.update();
-  }
-});
+  }));
+
+  const cachedCards = Array.from(document.querySelectorAll('gh-card') as NodeListOf<GithubCard>).filter(card =>
+    card.cached
+  );
+  await Promise.all(cachedCards.map(async (card) => {
+    await card.update();
+  }));
+}
+updateCards()
 
 function setString(card: GithubCard, elementID: string, value: string | number) {
   const element = card.querySelector(`#${elementID}`);
