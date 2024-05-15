@@ -27,13 +27,14 @@ class GithubCard extends HTMLElement {
 
   update_string() {
     if (this.cachedData) {
-      if (this.cachedData.forks_count != 0)
+      if (this.cachedData.forks_count != 0) {
         showElement(this, "gh_fork_icon")
-      setString(this, "gh_forks", this.cachedData.forks_count.toString());
-
-      if (this.cachedData.stargazers_count != 0)
+        setString(this, "gh_forks", this.cachedData.forks_count.toString());
+      }
+      if (this.cachedData.stargazers_count != 0) {
         showElement(this, "gh_star_icon")
-      setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
+        setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
+      }
     }
   }
 
