@@ -79,7 +79,7 @@ const repository: Repository = await fetchGithubStaticData(owner, repo, auth);
       style={"background-color: " + repository.color + "; margin-right:5px;"}
     ></span>
     <span>{repository.language}</span>
-    <span id="gh_star_icon" style="margin-left: 15px;"
+    <span id="gh_star_icon" style="margin-left: 15px; visibility: hidden;"
       ><svg height="16" viewBox="0 0 16 16" width="16">
         <path
           fill={iconColor}
@@ -88,7 +88,7 @@ const repository: Repository = await fetchGithubStaticData(owner, repo, auth);
       </svg></span
     >
     <span id="gh_stars"></span>
-    <span id="gh_fork_icon" style="margin-left: 15px;"
+    <span id="gh_fork_icon" style="margin-left: 15px; visibility: hidden;"
       ><svg height="16" viewBox="0 0 16 16" width="16">
         <path
           fill={iconColor}

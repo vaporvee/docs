@@ -18,22 +18,22 @@ class GithubCard extends HTMLElement {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
     if (!response.ok) {
       console.log('Failed to fetch repository');
+      return null;
+    } else {
+      const data: Repository = await response.json();
+      return data;
     }
-    const data: Repository = await response.json();
-    return data;
   }
 
   update_string() {
     if (this.cachedData) {
-      if (this.cachedData.forks_count === 0)
-        hideElement(this, "gh_fork_icon")
-      else
-        setString(this, "gh_forks", this.cachedData.forks_count.toString());
+      if (this.cachedData.forks_count != 0)
+        showElement(this, "gh_fork_icon")
+      setString(this, "gh_forks", this.cachedData.forks_count.toString());
 
-      if (this.cachedData.stargazers_count === 0)
-        hideElement(this, "gh_star_icon")
-      else
-        setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
+      if (this.cachedData.stargazers_count != 0)
+        showElement(this, "gh_star_icon")
+      setString(this, "gh_stars", this.cachedData.stargazers_count.toString());
     }
   }
 
@@ -42,14 +42,14 @@ class GithubCard extends HTMLElement {
     const cachedData = localStorage.getItem(cachedDataKey);
     if (cachedData) {
       this.cachedData = JSON.parse(cachedData);
-      this.update_string();
     }
     try {
       this.cachedData = await GithubCard.fetchRepository(this.owner, this.repo);
       localStorage.setItem(cachedDataKey, JSON.stringify(this.cachedData));
-      this.update_string();
     } catch (error) {
       console.log('Failed to fetch repository data:', error);
+    } finally {
+      this.update_string();
     }
   }
 }
@@ -69,9 +69,9 @@ function setString(card: GithubCard, elementID: string, value: string | number) 
   }
 }
 
-function hideElement(card: GithubCard, elementID: string) {
+function showElement(card: GithubCard, elementID: string) {
   const element: HTMLElement = card.querySelector(`#${elementID}`);
   if (element) {
-    element.style.visibility = "hidden"
+    element.style.visibility = "initial"
   }
 }
