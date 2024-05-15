@@ -20,6 +20,17 @@ img[src$='#icon']{
   margin: -3px;
 }
 
+gh-card{
+  background-color: #00000000!important;
+  border-color: #3c3349 !important;
+}
+
+.iconbox{
+  a::after{
+    display: none !important;
+  }
+}
+
 a {
   &[target="_blank"]::after {
     display: inline-block;
@@ -36,4 +47,10 @@ a {
     content: none;
     display: unset;
   }
+}
+
+.small-width{
+  width: 480px; 
+  max-width: 100%; 
+  margin-bottom: 45px;
 }
