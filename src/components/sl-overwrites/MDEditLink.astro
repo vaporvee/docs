@@ -1,0 +1,10 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import EditLink from "@astrojs/starlight/components/EditLink.astro";
+import FeedbackComponent from "../Feedback.astro";
+---
+
+<>
+  <FeedbackComponent />
+  <EditLink {...Astro.props} />
+</>
