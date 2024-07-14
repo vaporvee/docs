@@ -49,8 +49,6 @@ export default defineConfig({
       ],
       components: {
         Head: "./src/components/sl-overwrites/Head.astro",
-        EditLink: "./src/components/sl-overwrites/MDEditLink.astro",
-        //SocialIcons: "./src/components/SocialIcons.astro",
       },
     }),
     icon(),
