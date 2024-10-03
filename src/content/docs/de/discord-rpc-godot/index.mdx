@@ -1,10 +1,14 @@
 ---
 title: Erste Schritte
 prev: false
+banner:
+  content: |
+    Do you like Minecraft? I took a new approach to modpacks with Boundless Horizons! 
+    <a href="https://modrinth.com/modpack/boundless">Check it out</a>
 ---
 import { Steps, FileTree, Tabs, TabItem } from "@astrojs/starlight/components";
 import { Content as LastQuickSteps } from "../../../doc-reusables/de/last_quick_steps.mdx";
-import DownloadBtn from "../../../../components/DownloadBtn.astro"
+import { LinkButton } from '@astrojs/starlight/components';
 
 :::danger[Wichtige Plugin-Erklärung]
 **Diese dokumentation gilt für das Discord Game SDK, NICHT das Embedded App SDK** <br/>
@@ -50,7 +54,7 @@ DiscordRPC.app_id = #<deine Application-ID>
     <Steps>
       <ol>
         <li>
-        <DownloadBtn label="Addon herunterladen" href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/ADDON-discord-rpc-godot.zip/" /><br/>
+        <LinkButton href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/ADDON-discord-rpc-godot.zip/"  icon="document" iconPlacement="start">Addon herunterladen</LinkButton><br/>
         </li>
         <li>
 		Kopiere den Ordner aus der Zip-Datei in das Stammverzeichnis deines Godot-Projekts wie folgt
@@ -95,10 +99,12 @@ DiscordRPC.refresh() # Nach Änderung der Variablen immer aktualisieren!
 **Dann sollte es ungefähr so aussehen:**
 <img width="400px" src="https://raw.githubusercontent.com/vaporvee/discord-rpc-godot/main/project/assets/ActivityPreview.svg" />
 
-<DownloadBtn label="Probier eine fertige Demo" href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/Demo-Export.zip" />
+<LinkButton href="https://github.com/vaporvee/discord-rpc-godot/releases/latest/download/Demo-Export.zip" >Probier eine fertige Demo</LinkButton>
 ## Fehlerbehebung
-Versuche erstmal, das Plugin neu zu installieren, und starte sowohl deinen Godot-Editor als auch deinen Discord-Client neu.
-<details><summary><b>In meiner Godot-Konsole gibt es keine Fehler vom Plugin, aber meine Aktivität wird nicht in meinem Discord-Client angezeigt.</b></summary>Stelle sicher, dass eine `DiscordSDK.run_callbacks()`-Funktion in einer `_process(delta)`-Funktion ausgeführt wird. Dies sollte im Autoload passieren, das vom Plugin hinzugefügt wurde. Wenn es immer noch nicht hilft, versuche die obige Demo. Wenn in deinem Discord-Profilkarten immer noch nichts angezeigt wird, musst du die entsprechenden Einstellungen in deinem Discord-CLient zurücksetzen oder das plugin neu installieren.</details>
+Versuche erstmal, das Plugin neu zu installieren, und starte sowohl deinen Godot-Editor als auch deinen Discord-Client neu. Oder probiere die obige Demo. Wenn du immernoch Probleme hast, kannst du folgendes probieren:
+<details><summary><b>Ich habe alles richtig gemacht und keine Fehlermeldung bekommen. Die Discord RPC Activity wird immernoch nicht angezeigt.</b></summary>
+Stelle sicher, dass `Discord Einstellungen -> Privatsphäre deiner Aktivitäten ->` `Teile deine entdeckten Aktivitäten mit anderen` in deinem Discord Client an ist.<br/> ![Discord Settings Screenshot](/images/discord-activity-setting-screenshot-de.webp)</details>
+<details><summary><b>In meiner Godot-Konsole gibt es keine Fehler vom Plugin, aber meine Aktivität wird nicht in meinem Discord-Client angezeigt.</b></summary>Stelle sicher, dass eine `DiscordSDK.run_callbacks()`-Funktion in einer `_process(delta)`-Funktion ausgeführt wird. Dies sollte im Autoload passieren, das vom Plugin hinzugefügt wurde. </details>
 <details>
 <summary><b>Ich habe viele `DiscordSDK not declared`-Fehler in meiner Godot-Konsole und kann das Plugin nicht verwenden.</b></summary>Stelle sicher, dass das Plugin tatsächlich aktiviert ist. Dann sollte das Plugin funktionieren, und nach dem zweiten Neustart solltest du keine Fehler mehr vom Plugin erhalten. Aber wenn es dir trotzdem Fehler gibt, lösche diese `.gdignore`-Datei in deinem Datei-Explorer (wird im Godot-Editor nicht angezeigt)
 <FileTree>
@@ -112,4 +118,21 @@ Versuche erstmal, das Plugin neu zu installieren, und starte sowohl deinen Godot
 - project.godot
 </FileTree>
 und starte den Editor manuell neu.
+</details>
+<details><summary><b>Ich hab Discord über Flatpack heruntergeladen und es funktioniert nich.</b></summary>Benutz halt kein Flatpack... (Es hat überhaupt keinen Discord RPC support)</details>
+<details>
+<summary><b>Ich kann mein Spiel mit diesem Plugin auf einer Plattform, die nicht unterstützt wird, nicht zum Laufen bringen.</b></summary>
+Du musst das Plugin deaktivieren (das bedeutet, niemals eine Szene zu instanziieren, die Code vom Plugin enthält). Das machst du mit einem benutzerdefinierten Manager. Hier ist ein gutes Beispiel:
+```gdscript
+func is_discord_rpc_supported() -> bool:
+    return game_platform == GamePlatform.PC and GDExtensionManager.is_extension_loaded("res://addons/discord-rpc-gd/bin/discord-rpc-gd.gdextension")
+
+func _init_discord_rpc():
+    if not is_discord_rpc_supported():
+        return
+    var discord_rich_presence_scene: PackedScene = load("res://scenes/integration/discord_rich_presence.tscn")
+    discord_rich_presence = discord_rich_presence_scene.instantiate()
+    add_child(discord_rich_presence)
+    discord_rich_presence.initialize()
+    ```
 </details>
