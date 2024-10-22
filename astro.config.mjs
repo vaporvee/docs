@@ -23,7 +23,7 @@ export default defineConfig({
       customCss: ["./src/styles/custom.scss", "./src/styles/global.scss"],
       social: {
         github: "https://github.com/vaporvee",
-        discord: "https://discord.com/invite/EBdaTefpWy",
+        discord: "https://discord.gg/3gqUrtbaur",
         linkedin: "https://linkedin.com/in/yannik-ain/",
       },
       editLink: {
