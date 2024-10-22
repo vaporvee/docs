@@ -22,13 +22,13 @@ The GameSDK's Achievements, Applications, Voice, Images, Lobbies, Networking, St
 :::
 <br />
 :::tip[Keep in mind] 
-To make anything work in the plugin make sure to run
+To make anything work in the plugin, make sure to run:
 ```gdscript
 func _process(_delta):
     DiscordRPC.run_callbacks()
 ```
 
-This happens normaly inside the Autoload wich should be automatically added by the plugin. <br />
+This happens normally inside the Autoload which should be automatically added by the plugin.<br />
 Something that does **not get added automatically** is your `app_id`. It is also mandatory to be able to use anything in the plugin.
 
 ```gdscript
