@@ -24,6 +24,7 @@ export default defineConfig({
       social: {
         github: "https://github.com/vaporvee",
         discord: "https://discord.com/invite/EBdaTefpWy",
+        blueSky: "https://bsky.app/profile/vaporvee.com",
         linkedin: "https://linkedin.com/in/yannik-ain/",
       },
       editLink: {
