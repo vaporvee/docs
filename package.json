@@ -2,6 +2,7 @@
   "name": "com.vaporvee.docs",
   "type": "module",
   "version": "1.0.0",
+  "packageManager": "bun@1.1.36",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -10,12 +11,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.3",
-    "@astrojs/mdx": "3.1.7",
-    "@astrojs/starlight": "0.28.2",
+    "@astrojs/check": "0.9.4",
+    "@astrojs/mdx": "3.1.9",
+    "@astrojs/starlight": "0.29.2",
     "@expressive-code/plugin-shiki": "^0.35.3",
     "@iconify-json/line-md": "^1.1.37",
-    "astro": "4.15.11",
+    "astro": "4.16.13",
     "astro-expressive-code": "^0.35.3",
     "astro-feelback": "^0.3.4",
     "astro-github-component": "^1.0.4",
